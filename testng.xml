@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <parameter name="browser" value="chrome"/>
+    <test verbose="2" preserve-order="true" name="LoginTest">
+        <groups>
+            <run>
+                <include name="positive"/>
+                <include name="negative"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="LoginTest">
+                <!--                <methods>-->
+                <!--                    <include name="tc1CorrectData"/>-->
+                <!--                    <include name="tc2IncorrectPassword"/>-->
+                <!--                    <include name="tc3IncorrectName"/>-->
+                <!--                    <include name="tc4IncorrectData"/>-->
+                <!--                </methods>-->
+            </class>
+        </classes>
+    </test>
+</suite>
