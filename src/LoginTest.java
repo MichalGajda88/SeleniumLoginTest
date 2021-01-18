@@ -3,7 +3,10 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
@@ -12,32 +15,52 @@ import java.util.concurrent.TimeUnit;
 public class LoginTest {
 
     WebDriver driver;
-    String testPage = "https://www.gmail.com", errorPage = "https://poczta.interia.pl/logowanie/?b=-1",
+    String testPage = "https://www.poczta.interia.pl", errorPage = "https://poczta.interia.pl/logowanie/?b=-1",
             correctName = "test9999@interia.pl", correctPassword = "Test1234", incorrectName = "mietek123",
             incorrectPassword = "ble1232";
 
     @BeforeClass(alwaysRun = true)
-    @Parameters({"browser"})
-    public void setup(String browser) {
+    @Parameters({"browser", "adblock"})
+    public void setup(String browser, String adblock) {
+
 
         if (browser.equalsIgnoreCase("chrome")) {
             System.setProperty("webdriver.chrome.driver", "E:\\AUTOMATYZACJA\\selenium\\chromedriver.exe");
             driver = new ChromeDriver();
+
+            if (adblock.equalsIgnoreCase("on")){
+                ChromeOptions options = new ChromeOptions();
+                options.addArguments("load-extension=C:\\Users\\Pajdzior\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\cfhdojbkjhnklbpkdaibdccddilifddb\\3.10.1_0");
+                DesiredCapabilities capabilities = new DesiredCapabilities();
+                capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+                ChromeDriver driver = new ChromeDriver(capabilities);
+            }
+
         } else if (browser.equalsIgnoreCase("firefox")) {
             System.setProperty("webdriver.gecko.driver", "E:\\AUTOMATYZACJA\\selenium\\geckodriver.exe");
             driver = new FirefoxDriver();
-        }
 
+                if (adblock.equalsIgnoreCase("on")){
+                    FirefoxOptions options = new FirefoxOptions();
+                    options.addArguments("load-extension=C:\\Users\\Pajdzior\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\szblmzky.default-release-1611000105252\\extensions");
+                    DesiredCapabilities capabilities = new DesiredCapabilities();
+                    capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+                    FirefoxDriver driver = new FirefoxDriver(capabilities);
+                }
+        }
 
         driver.manage().deleteAllCookies();
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
         driver.get(testPage);
-        driver.findElement(By.id("details-button")).click();
-        driver.findElement(By.id("proceed-link")).click();
-        driver.findElement(By.xpath("//button[@class='rodo-popup-agree']")).click();
 
+        if (browser.equalsIgnoreCase("chrome")) {
+            WebElement detailsButton = driver.findElement(By.id("details-button"));
+            detailsButton.click();
+            driver.findElement(By.id("proceed-link")).click();
+            driver.findElement(By.xpath("//button[@class='rodo-popup-agree']")).click();
+        }
     }
 
     @BeforeMethod(alwaysRun = true)
@@ -74,8 +97,7 @@ public class LoginTest {
         WebElement mailBox = driver.findElement(By.xpath("//section[@class='msglist-container']"));
         Assert.assertTrue(mailBox.isDisplayed(), "User is not logged in");
         System.out.println("User is logged in");
-//        WebElement closeDialogButton = driver.findElement(By.xpath("//div[@class='dialog__close icon icon-close']"));
-//        closeDialogButton.click();
+
     }
 
     @Test(priority = 2, groups = {"negative"})
@@ -91,8 +113,7 @@ public class LoginTest {
         WebElement errorMessage = driver.findElement(By.xpath("//span[@class='form__error']"));
         Assert.assertTrue(errorMessage.isDisplayed(), "User is logged in");
         System.out.println("User is not logged in");
-//        WebElement closeDialogButton = driver.findElement(By.xpath("//div[@class='dialog__close icon icon-close']"));
-//        closeDialogButton.click();
+
     }
 
     @Test(priority = 3, groups = {"negative"})
