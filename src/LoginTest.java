@@ -15,7 +15,8 @@ import java.util.concurrent.TimeUnit;
 public class LoginTest {
 
     WebDriver driver;
-    String testPage = "https://www.poczta.interia.pl", errorPage = "https://poczta.interia.pl/logowanie/?b=-1",
+    String testPage = "https://www.poczta.interia.pl", loginPage = "https://poczta.interia.pl/logowanie/",
+            errorPage =  "https://poczta.interia.pl/logowanie/?b=-1",
             correctName = "test9999@interia.pl", correctPassword = "Test1234", incorrectName = "mietek123",
             incorrectPassword = "ble1232";
 
@@ -79,6 +80,7 @@ public class LoginTest {
             WebElement logoutButton = driver.findElement(By.xpath("//a[@class='account-info__logout button']"));
             logoutButton.click();
         }
+
     }
 
     @AfterClass(alwaysRun = true)
@@ -149,4 +151,46 @@ public class LoginTest {
 //        WebElement closeDialogButton = driver.findElement(By.xpath("//div[@class='dialog__close icon icon-close']"));
 //        closeDialogButton.click();
     }
+
+    @Test(priority = 5, groups = {"negative"})
+    public void tc5NoLogin() {
+        WebElement inputName = driver.findElement(By.id("email"));
+        inputName.sendKeys(Keys.CONTROL + "a");
+        inputName.sendKeys(Keys.BACK_SPACE);
+        WebElement inputPassword = driver.findElement(By.id("password"));
+        inputPassword.sendKeys(incorrectPassword);
+        WebElement button = driver.findElement(By.xpath("//button[@class='btn']"));
+        button.click();
+        WebElement errorMessage = driver.findElement(By.xpath("//ul[@class='account-input__error']"));
+        Assert.assertTrue(errorMessage.isDisplayed(), "User is logged in");
+        System.out.println("User is not logged in");
+
+    }
+
+    @Test(priority = 6, groups = {"negative"})
+    public void tc6NoPassword() {
+        WebElement inputName = driver.findElement(By.id("email"));
+        inputName.sendKeys(Keys.CONTROL + "a");
+        inputName.sendKeys(Keys.BACK_SPACE);
+        inputName.sendKeys(correctName);
+        WebElement button = driver.findElement(By.xpath("//button[@class='btn']"));
+        button.click();
+        WebElement errorMessage = driver.findElement(By.xpath("//ul[@class='account-input__error']"));
+        Assert.assertTrue(errorMessage.isDisplayed(), "User is logged in");
+        System.out.println("User is not logged in");
+    }
+
+    @Test(priority = 7, groups = {"negative"})
+    public void tc7NoData() {
+        WebElement inputName = driver.findElement(By.id("email"));
+        inputName.sendKeys(Keys.CONTROL + "a");
+        inputName.sendKeys(Keys.BACK_SPACE);
+        WebElement button = driver.findElement(By.xpath("//button[@class='btn']"));
+        button.click();
+        WebElement errorMessage = driver.findElement(By.xpath("//ul[@class='account-input__error']"));
+        Assert.assertTrue(errorMessage.isDisplayed(), "User is logged in");
+        System.out.println("User is not logged in");
+    }
+
+
 }

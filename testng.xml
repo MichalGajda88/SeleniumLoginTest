@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="All Test Suite">
-    <parameter name="browser" value="firefox"/>
+    <parameter name="browser" value="chrome"/>
     <parameter name="adblock" value="on"/>
     <test verbose="2" preserve-order="true" name="LoginTest">
         <groups>
@@ -17,6 +17,9 @@
                 <!--                    <include name="tc2IncorrectPassword"/>-->
                 <!--                    <include name="tc3IncorrectName"/>-->
                 <!--                    <include name="tc4IncorrectData"/>-->
+                <!--                    <include name="tc5NoLogin"/>-->
+                <!--                    <include name="tc6NoPassword"/>-->
+                <!--                    <include name="tc7NoData"/>-->
                 <!--                </methods>-->
             </class>
         </classes>
