@@ -1,5 +1,4 @@
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -14,11 +13,12 @@ import java.util.concurrent.TimeUnit;
 
 public class LoginTest {
 
+    Actions actions = new Actions();
+
     WebDriver driver;
-    String testPage = "https://www.poczta.interia.pl", loginPage = "https://poczta.interia.pl/logowanie/",
-            errorPage =  "https://poczta.interia.pl/logowanie/?b=-1",
-            correctName = "test9999@interia.pl", correctPassword = "Test1234", incorrectName = "mietek123",
-            incorrectPassword = "ble1232";
+    String testPage = "https://www.poczta.interia.pl",
+            correctName = "test9999@interia.pl", correctPassword = "Test1234",
+            incorrectName = "mietek123", incorrectPassword = "ble1232";
 
     @BeforeClass(alwaysRun = true)
     @Parameters({"browser", "adblock"})
@@ -69,7 +69,6 @@ public class LoginTest {
         if (!driver.getCurrentUrl().equals(testPage)) {
             driver.get(testPage);
         }
-
     }
 
     @AfterMethod(alwaysRun = true)
@@ -97,101 +96,78 @@ public class LoginTest {
         WebElement button = driver.findElement(By.xpath("//button[@class='btn']"));
         button.click();
         WebElement mailBox = driver.findElement(By.xpath("//section[@class='msglist-container']"));
-        Assert.assertTrue(mailBox.isDisplayed(), "User is not logged in");
-        System.out.println("User is logged in");
-
+        actions.checkErrorPossitive(mailBox);
     }
 
     @Test(priority = 2, groups = {"negative"})
     public void tc2IncorrectPassword() {
         WebElement inputName = driver.findElement(By.id("email"));
-        inputName.sendKeys(Keys.CONTROL + "a");
-        inputName.sendKeys(Keys.BACK_SPACE);
+        actions.clearField(inputName);
         inputName.sendKeys(correctName);
         WebElement inputPassword = driver.findElement(By.id("password"));
         inputPassword.sendKeys(incorrectPassword);
         WebElement button = driver.findElement(By.xpath("//button[@class='btn']"));
         button.click();
         WebElement errorMessage = driver.findElement(By.xpath("//span[@class='form__error']"));
-        Assert.assertTrue(errorMessage.isDisplayed(), "User is logged in");
-        System.out.println("User is not logged in");
-
+        actions.checkErrorNegative(errorMessage);
     }
 
     @Test(priority = 3, groups = {"negative"})
     public void tc3IncorrectName() {
         WebElement inputName = driver.findElement(By.id("email"));
-        inputName.sendKeys(Keys.CONTROL + "a");
-        inputName.sendKeys(Keys.BACK_SPACE);
+        actions.clearField(inputName);
         inputName.sendKeys(incorrectName);
         WebElement inputPassword = driver.findElement(By.id("password"));
         inputPassword.sendKeys(correctPassword);
         WebElement button = driver.findElement(By.xpath("//button[@class='btn']"));
         button.click();
         WebElement errorMessage = driver.findElement(By.xpath("//span[@class='form__error']"));
-        Assert.assertTrue(errorMessage.isDisplayed(), "User is logged in");
-        System.out.println("User is not logged in");
-//        WebElement closeDialogButton = driver.findElement(By.xpath("//div[@class='dialog__close icon icon-close']"));
-//        closeDialogButton.click();
+        actions.checkErrorNegative(errorMessage);
     }
 
     @Test(priority = 4, groups = {"negative"})
     public void tc4IncorrectData() {
         WebElement inputName = driver.findElement(By.id("email"));
-        inputName.sendKeys(Keys.CONTROL + "a");
-        inputName.sendKeys(Keys.BACK_SPACE);
+        actions.clearField(inputName);
         inputName.sendKeys(incorrectName);
         WebElement inputPassword = driver.findElement(By.id("password"));
         inputPassword.sendKeys(incorrectPassword);
         WebElement button = driver.findElement(By.xpath("//button[@class='btn']"));
         button.click();
         WebElement errorMessage = driver.findElement(By.xpath("//span[@class='form__error']"));
-        Assert.assertTrue(errorMessage.isDisplayed(), "User is logged in");
-        System.out.println("User is not logged in");
-//        WebElement closeDialogButton = driver.findElement(By.xpath("//div[@class='dialog__close icon icon-close']"));
-//        closeDialogButton.click();
+        actions.checkErrorNegative(errorMessage);
     }
 
     @Test(priority = 5, groups = {"negative"})
     public void tc5NoLogin() {
         WebElement inputName = driver.findElement(By.id("email"));
-        inputName.sendKeys(Keys.CONTROL + "a");
-        inputName.sendKeys(Keys.BACK_SPACE);
+        actions.clearField(inputName);
         WebElement inputPassword = driver.findElement(By.id("password"));
         inputPassword.sendKeys(incorrectPassword);
         WebElement button = driver.findElement(By.xpath("//button[@class='btn']"));
         button.click();
         WebElement errorMessage = driver.findElement(By.xpath("//ul[@class='account-input__error']"));
-        Assert.assertTrue(errorMessage.isDisplayed(), "User is logged in");
-        System.out.println("User is not logged in");
-        System.out.println(driver.getCurrentUrl());
-
+        actions.checkErrorNegative(errorMessage);
     }
 
     @Test(priority = 6, groups = {"negative"})
     public void tc6NoPassword() {
         WebElement inputName = driver.findElement(By.id("email"));
-        inputName.sendKeys(Keys.CONTROL + "a");
-        inputName.sendKeys(Keys.BACK_SPACE);
+        actions.clearField(inputName);
         inputName.sendKeys(correctName);
         WebElement button = driver.findElement(By.xpath("//button[@class='btn']"));
         button.click();
         WebElement errorMessage = driver.findElement(By.xpath("//ul[@class='account-input__error']"));
-        Assert.assertTrue(errorMessage.isDisplayed(), "User is logged in");
-        System.out.println("User is not logged in");
+        actions.checkErrorNegative(errorMessage);
     }
 
     @Test(priority = 7, groups = {"negative"})
     public void tc7NoData() {
         WebElement inputName = driver.findElement(By.id("email"));
-        inputName.sendKeys(Keys.CONTROL + "a");
-        inputName.sendKeys(Keys.BACK_SPACE);
+        actions.clearField(inputName);
         WebElement button = driver.findElement(By.xpath("//button[@class='btn']"));
         button.click();
         WebElement errorMessage = driver.findElement(By.xpath("//ul[@class='account-input__error']"));
-        Assert.assertTrue(errorMessage.isDisplayed(), "User is logged in");
-        System.out.println("User is not logged in");
+        actions.checkErrorNegative(errorMessage);
     }
-
-
 }
