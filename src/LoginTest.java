@@ -74,7 +74,7 @@ public class LoginTest {
 
     @AfterMethod(alwaysRun = true)
     public void logout() {
-        if (!driver.getCurrentUrl().equals(errorPage)) {
+        if (driver.getCurrentUrl().contains("/folder/")) {
             WebElement userButton = driver.findElement(By.xpath("//div[@Title='Wyloguj']"));
             userButton.click();
             WebElement logoutButton = driver.findElement(By.xpath("//a[@class='account-info__logout button']"));
@@ -164,6 +164,7 @@ public class LoginTest {
         WebElement errorMessage = driver.findElement(By.xpath("//ul[@class='account-input__error']"));
         Assert.assertTrue(errorMessage.isDisplayed(), "User is logged in");
         System.out.println("User is not logged in");
+        System.out.println(driver.getCurrentUrl());
 
     }
 
