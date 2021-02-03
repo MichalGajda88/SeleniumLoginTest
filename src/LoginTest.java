@@ -6,7 +6,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.testng.Assert;
 import org.testng.annotations.*;
 
 import java.util.concurrent.TimeUnit;
@@ -29,9 +28,9 @@ public class LoginTest {
             System.setProperty("webdriver.chrome.driver", "E:\\AUTOMATYZACJA\\selenium\\chromedriver.exe");
             driver = new ChromeDriver();
 
-            if (adblock.equalsIgnoreCase("on")){
+            if (adblock.equalsIgnoreCase("on")) {
                 ChromeOptions options = new ChromeOptions();
-                options.addArguments("load-extension=C:\\Users\\Pajdzior\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\cfhdojbkjhnklbpkdaibdccddilifddb\\3.10.1_0");
+                options.addArguments("load-extension=C:\\Users\\Pajdzior\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\cfhdojbkjhnklbpkdaibdccddilifddb\\3.10.2_0");
                 DesiredCapabilities capabilities = new DesiredCapabilities();
                 capabilities.setCapability(ChromeOptions.CAPABILITY, options);
                 ChromeDriver driver = new ChromeDriver(capabilities);
@@ -41,13 +40,13 @@ public class LoginTest {
             System.setProperty("webdriver.gecko.driver", "E:\\AUTOMATYZACJA\\selenium\\geckodriver.exe");
             driver = new FirefoxDriver();
 
-                if (adblock.equalsIgnoreCase("on")){
-                    FirefoxOptions options = new FirefoxOptions();
-                    options.addArguments("load-extension=C:\\Users\\Pajdzior\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\szblmzky.default-release-1611000105252\\extensions");
-                    DesiredCapabilities capabilities = new DesiredCapabilities();
-                    capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-                    FirefoxDriver driver = new FirefoxDriver(capabilities);
-                }
+            if (adblock.equalsIgnoreCase("on")) {
+                FirefoxOptions options = new FirefoxOptions();
+                options.addArguments("load-extension=C:\\Users\\Pajdzior\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\szblmzky.default-release-1611000105252\\extensions");
+                DesiredCapabilities capabilities = new DesiredCapabilities();
+                capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+                FirefoxDriver driver = new FirefoxDriver(capabilities);
+            }
         }
 
         driver.manage().deleteAllCookies();
@@ -102,10 +101,9 @@ public class LoginTest {
     @Test(priority = 2, groups = {"negative"})
     public void tc2IncorrectPassword() {
         WebElement inputName = driver.findElement(By.id("email"));
-        actions.clearField(inputName);
-        inputName.sendKeys(correctName);
+        actions.clearField(driver, 10, inputName, correctName);
         WebElement inputPassword = driver.findElement(By.id("password"));
-        inputPassword.sendKeys(incorrectPassword);
+        actions.clearField(driver, 10, inputPassword, incorrectPassword);
         WebElement button = driver.findElement(By.xpath("//button[@class='btn']"));
         button.click();
         WebElement errorMessage = driver.findElement(By.xpath("//span[@class='form__error']"));
@@ -115,10 +113,9 @@ public class LoginTest {
     @Test(priority = 3, groups = {"negative"})
     public void tc3IncorrectName() {
         WebElement inputName = driver.findElement(By.id("email"));
-        actions.clearField(inputName);
-        inputName.sendKeys(incorrectName);
+        actions.clearField(driver, 10, inputName, incorrectName);
         WebElement inputPassword = driver.findElement(By.id("password"));
-        inputPassword.sendKeys(correctPassword);
+        actions.clearField(driver, 10, inputPassword, correctPassword);
         WebElement button = driver.findElement(By.xpath("//button[@class='btn']"));
         button.click();
         WebElement errorMessage = driver.findElement(By.xpath("//span[@class='form__error']"));
@@ -128,10 +125,9 @@ public class LoginTest {
     @Test(priority = 4, groups = {"negative"})
     public void tc4IncorrectData() {
         WebElement inputName = driver.findElement(By.id("email"));
-        actions.clearField(inputName);
-        inputName.sendKeys(incorrectName);
+        actions.clearField(driver, 10, inputName, incorrectName);
         WebElement inputPassword = driver.findElement(By.id("password"));
-        inputPassword.sendKeys(incorrectPassword);
+        actions.clearField(driver, 10, inputPassword, incorrectPassword);
         WebElement button = driver.findElement(By.xpath("//button[@class='btn']"));
         button.click();
         WebElement errorMessage = driver.findElement(By.xpath("//span[@class='form__error']"));
@@ -141,9 +137,9 @@ public class LoginTest {
     @Test(priority = 5, groups = {"negative"})
     public void tc5NoLogin() {
         WebElement inputName = driver.findElement(By.id("email"));
-        actions.clearField(inputName);
+        actions.clearField(driver, 10, inputName, "");
         WebElement inputPassword = driver.findElement(By.id("password"));
-        inputPassword.sendKeys(incorrectPassword);
+        actions.clearField(driver, 10, inputPassword, incorrectPassword);
         WebElement button = driver.findElement(By.xpath("//button[@class='btn']"));
         button.click();
         WebElement errorMessage = driver.findElement(By.xpath("//ul[@class='account-input__error']"));
@@ -153,8 +149,7 @@ public class LoginTest {
     @Test(priority = 6, groups = {"negative"})
     public void tc6NoPassword() {
         WebElement inputName = driver.findElement(By.id("email"));
-        actions.clearField(inputName);
-        inputName.sendKeys(correctName);
+        actions.clearField(driver, 10, inputName, correctName);
         WebElement button = driver.findElement(By.xpath("//button[@class='btn']"));
         button.click();
         WebElement errorMessage = driver.findElement(By.xpath("//ul[@class='account-input__error']"));
@@ -164,7 +159,7 @@ public class LoginTest {
     @Test(priority = 7, groups = {"negative"})
     public void tc7NoData() {
         WebElement inputName = driver.findElement(By.id("email"));
-        actions.clearField(inputName);
+        inputName.clear();
         WebElement button = driver.findElement(By.xpath("//button[@class='btn']"));
         button.click();
         WebElement errorMessage = driver.findElement(By.xpath("//ul[@class='account-input__error']"));
