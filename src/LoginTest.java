@@ -159,7 +159,7 @@ public class LoginTest {
     @Test(priority = 7, groups = {"negative"})
     public void tc7NoData() {
         WebElement inputName = driver.findElement(By.id("email"));
-        inputName.clear();
+        actions.clearField(driver, 10, inputName, "");
         WebElement button = driver.findElement(By.xpath("//button[@class='btn']"));
         button.click();
         WebElement errorMessage = driver.findElement(By.xpath("//ul[@class='account-input__error']"));

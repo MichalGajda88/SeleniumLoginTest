@@ -12,12 +12,12 @@ public class Actions {
     }
 
     public void checkErrorPossitive (WebElement webElement){
-        Assert.assertTrue(webElement.isDisplayed(), "User is not logged in");
-        System.out.println("User is logged in");
+        Assert.assertTrue(webElement.isDisplayed(), "Test case failed: User is not logged in");
+        System.out.println("Test case passed: User is logged in");
     }
 
     public void checkErrorNegative (WebElement webElement){
-        Assert.assertTrue(webElement.isDisplayed(), "User is logged in");
-        System.out.println("User is not logged in");
+        Assert.assertTrue(webElement.isDisplayed(), "Test case failed: User is logged in");
+        System.out.println("Test case passed: User is not logged in");
     }
 }
